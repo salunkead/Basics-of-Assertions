@@ -66,3 +66,62 @@ module test;
       #200 $finish;
     end
 endmodule
+
+///failure -> test sequence is outside reference sequence
+module test;
+  bit clk,a,b,c,d;
+  always #5 clk=!clk;
+  
+  initial
+    begin
+      {a,b,c,d}=0;
+      @(negedge clk);
+      a=1;
+      repeat(4)@(negedge clk);
+      a=0;
+      @(negedge clk);
+      b=1;
+      repeat(2)@(negedge clk);
+      b=0;
+    end
+  
+  initial
+    begin
+      repeat(2)@(negedge clk);
+      c=1;
+      @(negedge clk);
+      c=0;
+      @(negedge clk);
+      c=1;
+      @(negedge clk);
+      c=0;
+      ///
+      d=1;
+      @(negedge clk);
+      d=0;
+      @(negedge clk);
+      d=1;
+      repeat(2)@(negedge clk);
+      d=0;
+      ///////failure as test_seq(seq1) is outside ref_seq
+      
+    end
+  
+  sequence ref_seq;
+    a[*4] ##2 b[*2];
+  endsequence
+  
+  sequence seq1;
+    c[=2] ##1 d[=3];
+  endsequence
+  
+  assert property(@(posedge clk) $rose(a) |-> seq1 within ref_seq)
+    $info("passed at t=%0t",$time);
+  
+  initial
+    begin
+      $dumpfile("test.vcd");
+      $dumpvars();
+      #200 $finish;
+    end
+endmodule
