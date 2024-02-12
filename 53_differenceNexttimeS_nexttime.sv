@@ -1,4 +1,4 @@
-///the difference between until and s_untils operator
+///the difference between nexttime and s_nexttime operator
 /*
 1.i have used level of the signal,
   in case of delay and until operator,even though 10 clock edges are not available,it gives success
