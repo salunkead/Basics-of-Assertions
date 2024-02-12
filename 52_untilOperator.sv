@@ -23,7 +23,7 @@ module test;
       a=1;
     end
   
-  assert property(@(posedge clk) $fell(rst) |-> rst until a) //success as reset is high until a is high
+  initial assert property(@(posedge clk) rst until a) //success as reset is high until a is high
     $info("passed at t=%0t",$time);
   
   initial
@@ -49,7 +49,7 @@ module test;
       a=0;
     end
   
-  assert property(@(posedge clk) $fell(rst) |-> rst until a) //success as reset is high but signal a never become high
+  initial assert property(@(posedge clk) rst until a) //success as reset is high but signal a never become high
     $info("passed at t=%0t",$time);
   
   initial
@@ -76,10 +76,10 @@ module test;
       rst=0;
     end
   
-  until_op:assert property(@(posedge clk) $fell(rst) |-> rst until a) //sucesss
+  initial until_op:assert property(@(posedge clk) rst until a) //sucesss
     $info("passed at t=%0t",$time);
   
-  s_until_op:assert property(@(posedge clk) $fell(rst) |-> rst s_until a) //success 
+  initial s_until_op:assert property(@(posedge clk) rst s_until a) //success 
     $info("passed at t=%0t",$time);
   
   initial
@@ -90,6 +90,7 @@ module test;
       #200 $finish;
     end
 endmodule
+
 
 ///////////////////////////
 module test;
@@ -109,10 +110,10 @@ module test;
       rst=0;
     end
   
-  until_op:assert property(@(posedge clk) $fell(rst) |-> rst until a) //sucesss
+  initial until_op:assert property(@(posedge clk) rst until a) //sucesss
     $info("passed at t=%0t",$time);
   
-  s_until_op:assert property(@(posedge clk) $fell(rst) |-> rst s_until a) //success 
+  initial s_until_op:assert property(@(posedge clk) rst s_until a) //success 
     $info("passed at t=%0t",$time);
   
   initial
