@@ -12,5 +12,6 @@ module test;
     begin
       $display("let declaration with default value");
       $display("result with default value is : %0d",default1(28));
+      $display("result when both the actual arguments are passed is : %0d",default1(32,78));
     end
 endmodule
