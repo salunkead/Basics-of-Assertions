@@ -8,6 +8,33 @@
 5.parentheses are used to group expressions and assign values to the local variables
 */
 
+/*
+added notes:
+1. we can initialize local variable in the sequence or property 
+   example:-
+    sequence seq;
+    int local_var=0;
+    int local_var1=10;
+    endsequence
+
+    property ppt;
+    int local_var=200;
+    endproperty
+
+2. local variable must be attached to an expression and should not be addded in the comparison expressin(==)
+
+for example:-
+sequence seq;
+int local_data=0;
+(a,b==a+20); -> local variable added in the comparison --> gives error
+endsequence
+
+3. local variable multiple assignment 
+ sequence seq;
+ int l1,l2,l3;
+ (a,l1=a+10,l2=a+20) ##5 (b,l3=l1+l2) ##0 l3==200;
+ endsequence
+*/
 /////when request is asserted then grant must come any time during simulation
 module test;
   bit clk,req,gnt;
