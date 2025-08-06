@@ -16,3 +16,51 @@ what if you want variable delay value?
 
 //Example:-
 
+module top;
+  logic wr,clk=0;
+  int read_data,exp_data;
+  time t;
+  
+  initial
+    begin
+      repeat(2) begin
+      wr=1;
+      repeat(5)@(negedge clk);
+      wr=0;
+      read_data=56;
+      t=$urandom_range(10,20);
+      repeat(t)@(negedge clk);
+      exp_data=read_data+10;
+      @(negedge clk);
+      end
+    end
+  
+  property p(time l_lat);
+    time latency=0;
+    @(posedge clk)
+    (
+    ($fell(wr),latency=l_lat,$display("inside first at t=%0t",$time)) ##1
+      (latency!=0,latency=latency-1,$display("latency=%0t",latency))[*0:$] ##1 latency==0 |->
+    (exp_data==read_data+10)
+    );
+  endproperty
+  
+  assert property( p(t))
+    $info("passed at t=%0t",$time);
+    else
+      $error("failed at t=%0t",$time);
+  
+    
+      
+  always #5 clk=~clk;
+  
+
+  
+  initial
+    begin
+      $dumpfile("dump.vcd");
+      $dumpvars;
+      $assertvacuousoff;
+      #1000 $finish;
+    end
+    endmodule
