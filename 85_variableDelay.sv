@@ -23,15 +23,15 @@ module top;
   
   initial
     begin
-      repeat(2) begin
-      wr=1;
-      repeat(5)@(negedge clk);
-      wr=0;
-      read_data=56;
-      t=$urandom_range(10,20);
-      repeat(t)@(negedge clk);
-      exp_data=read_data+10;
-      @(negedge clk);
+      repeat(5) begin
+        wr=1;
+        repeat(5)@(negedge clk);
+        wr=0;
+        read_data=$urandom_range(10,100);
+        t=$urandom_range(10,20);
+        repeat(t)@(negedge clk);
+        exp_data=read_data+10;
+        @(negedge clk);
       end
     end
   
@@ -63,4 +63,4 @@ module top;
       $assertvacuousoff;
       #1000 $finish;
     end
-    endmodule
+ endmodule
