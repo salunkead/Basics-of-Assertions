@@ -25,7 +25,9 @@ module test;
     end
   
   sequence seq;
-    @(posedge clk) a ##1 b;
+    @(posedge clk) a ##1 b; //we need to explicitly define the clocking edge in the sequence
+    //use of method on unclocked sequence is illegal
+    //the source and destination clock must be same
   endsequence
   
   triggered:assert property(@(posedge clk) seq.triggered |-> ##1 c) 
@@ -33,6 +35,8 @@ module test;
   
     general:assert property(@(posedge clk) seq |-> ##1 c) 
       $info("passed at t=%0t",$time);
+
+      //the key difference is when the evaluation of the sequence started
   
   initial
     begin
